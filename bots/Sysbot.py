@@ -11,6 +11,7 @@ from bots.commands.SysBotBaseCommands import SysBotBaseCommands
 from bots.commands.Pycord import UserQueue
 from discord.ext import commands
 from bots.utils.JsonHandler import JsonHandler
+from bots.utils.PokeCrypto import DecryptEb8, EncryptPb8
 
 class SysBotConnection():
     #Please, send help
@@ -26,13 +27,13 @@ class SysBotConnection():
         self.config = config
         self.settings = settings
 
-        self.loadPokemonFromDir()
-        self.freezeInstantText()
-
         self.pokemon = []
         self.curr_user = None
         self.curr_linkcode = None
         self.start_time = None
+
+        self.loadPokemonFromDir()
+        self.freezeInstantText()
 
 
     def freezeInstantText(self) -> None:
@@ -57,12 +58,12 @@ class SysBotConnection():
         return (datetime.datetime.now() - self.start_time).seconds <= self.config['tradeTimeout']
 
     def loadPokemonFromDir(self) -> None:
-        #TODO Make Distribution more dynamic
+        #TODO Add error handling for incompatible files
         dir_path = f"{os.path.dirname(os.path.realpath(__file__))}/distribute"
         for filename in os.listdir(dir_path):
-            if filename.endswith('eb8'):
+            if filename.endswith('pb8'):
                 with open(f'{dir_path}/{filename}', "rb") as f:
-                    self.pokemon.append(f.read())
+                    self.pokemon.append(EncryptPb8(bytearray(f.read())))
         # self.pokemon = iter(self.pokemon)
 
     def generateLinkCode(self) -> str:

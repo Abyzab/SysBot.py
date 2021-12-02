@@ -72,7 +72,7 @@ def ShuffleArray(data, sv, blockSize):
 
     return sdata
 
-def EncryptPk8(data):
+def EncryptPb8(data):
     ec = int.from_bytes(data[0:4], byteorder='little') & 0xFFFFFFFF
     sv = ec >> 13 & 31
 
@@ -80,7 +80,7 @@ def EncryptPk8(data):
     CryptPKM(ekm, ec, 8, 80)
     return ekm
 
-def DecryptEk8(data):
+def DecryptEb8(data):
     ec = int.from_bytes(data[0:4], byteorder='little') & 0xFFFFFFFF
 
     sv = ec >> 13 & 31

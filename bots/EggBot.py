@@ -6,7 +6,7 @@ import datetime
 
 from bots.commands.SysBotBaseCommands import SysBotBaseCommands
 from bots.utils.JsonHandler import JsonHandler
-from bots.utils.PokeCrypto import DecryptEk8
+from bots.utils.PokeCrypto import DecryptEb8
 
 class EggBotConnection:
     def __init__(self, address: str, port: int) -> None:
@@ -81,7 +81,7 @@ class EggBotConnection:
 
     def checkEgg(self) -> bool:
         egg = self.commands.peek(self.pointers['b1s1'], 344)
-        DecryptEgg = DecryptEk8(bytearray(binascii.unhexlify(egg[:-1])))
+        DecryptEgg = DecryptEb8(bytearray(binascii.unhexlify(egg[:-1])))
         print(DecryptEgg.hex())
         if "0x" + DecryptEgg.hex().upper()[:12] == "0x000000000000":
             return False
