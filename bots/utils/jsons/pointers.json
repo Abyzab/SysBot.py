@@ -1,0 +1,22 @@
+{   
+    "encounter" : "[[[main+4E29D08]+B8]+0]+20",
+    "b1s1" : "[[[[[main+4E29C50]+B8]+170]+20]+20]+20",
+    "trade" : "[[[main+4740040]+B8]+08]+20",
+    "is_receive" : "[[[[[main+4E2F210]+B8]+20]+108]+28]+78",
+    "is_trading" : "[[[[[main+4E2F210]+B8]+20]+108]+28]+7A",
+    "coroutine" : "[[[[[main+4E2F210]+B8]+20]+108]+28]+88",
+    "dialogue_select" : "[[main+469A9B8]+78]+1A0",
+    "dialogue_open" : "[[[[main+4E3C348]+270]+18]+28]+30",
+    "player_x" : "[[[main+4C0F578]+90]+118]+120",
+    "player_y" : "[[[main+4C0F578]+90]+118]+128",
+    "player_z" : "[[[main+4C0F578]+90]+118]+130",
+    "rot_x" :  "[[[main+4C0F578]+90]+118]+134",
+    "rot_y" : "[[[main+4C0F578]+90]+118]+13C",
+    "tradeFlowState" : "[[[[main+4E2F210]+B8]+20]+108]+80",
+    "instantText" : "[[[[main+4E3C348]+270]+18]+28]+48",
+    "connectionDetect" : "[[[[main+4E3C348]+270]+18]+28]+58",
+    "fps" : "[main+4F49248]+F14",
+    "box_menu" : "[[[[[main+4E28F38]+B8]+0]+250]+240]+0",
+    "day_care_dialogue" : "[[[[main+4E3C348]+270]+18]+28]+50",
+    "is_egg" : "[[main+4E29C50]+B8]+528"
+}
