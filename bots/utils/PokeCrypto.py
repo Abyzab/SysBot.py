@@ -1,3 +1,5 @@
+#TODO Make Tidy Class
+
 global BlockPosition
 BlockPosition = [
 0, 1, 2, 3,
@@ -69,13 +71,13 @@ def ShuffleArray(data, sv, blockSize):
         sdata = sdata[:start + (blockSize * b)] + toCopy + sdata[start + (blockSize * b)+blockSize:]
 
     return sdata
-#Possibly Broken, needs testing
+
 def EncryptPk8(data):
     ec = int.from_bytes(data[0:4], byteorder='little') & 0xFFFFFFFF
     sv = ec >> 13 & 31
 
     ekm = ShuffleArray(data, blockPositionInvert[sv], 80)
-    CryptPKM(ekm, ec, 80)
+    CryptPKM(ekm, ec, 8, 80)
     return ekm
 
 def DecryptEk8(data):
