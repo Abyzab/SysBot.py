@@ -1,33 +1,32 @@
 import time
 
-from discord.ext import commands
 
 class SysBotBaseCommands:
     def __init__(self, con):
         self.con = con
 
         self.keyboard_keys = {
-            "1" : "30", "2" : "31", "3" : "32",
-            "4" : "33", "5" : "34", "6" : "35",
-            "7" : "36", "8" : "37", "9" : "38",
-                        "0" : "39"
+            "1": "30", "2": "31", "3": "32",
+            "4": "33", "5": "34", "6": "35",
+            "7": "36", "8": "37", "9": "38",
+            "0": "39"
         }
 
         self.touch_coords = {
-            "0" : "700 600", "1" : "500 450", "2" : "700 450", 
-            "3" : "800 450", "4" : "500 500", "5" : "700 500", 
-            "6" : "800 500", "7" : "500 550", "8" : "700 550", 
-            "9" : "800 550" 
-            }
-    
+            "0": "700 600", "1": "500 450", "2": "700 450",
+            "3": "800 450", "4": "500 500", "5": "700 500",
+            "6": "800 500", "7": "500 550", "8": "700 550",
+            "9": "800 550"
+        }
+
     def parseJumps(self, pointer: str) -> str:
         if pointer[-1] == "]":
             pointer += "+0"
-        eval = pointer.replace("main", "").replace("[","").replace("]","").split("+")
-        eval.remove('')
-        jumps = "0x" + " 0x".join(eval)
+        evaluation = pointer.replace("main", "").replace("[", "").replace("]", "").split("+")
+        evaluation.remove('')
+        jumps = "0x" + " 0x".join(evaluation)
         return jumps
-    
+
     def resolvePointer(self, pointer: str) -> bytes:
         self.sendCommand(f'pointerRelative {self.parseJumps(pointer)}')
         time.sleep(0.5)
@@ -37,27 +36,27 @@ class SysBotBaseCommands:
         print(command)
         command += '\r\n'
         self.con.sendall(command.encode("ascii"))
-    
+
     def click(self, button: str, sleep: int = 0) -> None:
         self.sendCommand(f'click {button}')
         time.sleep(sleep)
-    
+
     def press(self, button: str, sleep: int = 0) -> None:
         self.sendCommand(f'press {button}')
         time.sleep(sleep)
-    
+
     def release(self, button: str, sleep: int = 0) -> None:
         self.sendCommand(f'release {button}')
         time.sleep(sleep)
-    
+
     def peek(self, pointer: str, size: int) -> bytes:
         self.sendCommand(f'pointerPeek {size} {self.parseJumps(pointer)}')
         time.sleep(0.4)
         return self.con.recv(689)
-    
+
     def poke(self, pointer: str, data: str) -> None:
         self.sendCommand(f'pointerPoke {data} {self.parseJumps(pointer)}')
-    
+
     def setStick(self, stick: str, x: str, y: str, sleep: int = 0) -> None:
         self.sendCommand(f'setStick {stick} {x} {y}')
         time.sleep(sleep)
@@ -66,7 +65,7 @@ class SysBotBaseCommands:
         self.sendCommand('getTitleID')
         time.sleep(0.4)
         return self.con.recv(689)
-    
+
     def getHeapBase(self) -> bytes:
         self.sendCommand('getHeapBase')
         time.sleep(0.4)
@@ -76,26 +75,26 @@ class SysBotBaseCommands:
         self.sendCommand('getMainNsoBase')
         time.sleep(0.4)
         return self.con.recv(689)
-    
+
     def enterCode(self, code: str) -> None:
         command = ""
         for number in code:
             command += self.keyboard_keys[number] + " "
 
         self.sendCommand(f'key {command.rstrip()}')
-    
+
     def touch(self, x: str, y: str) -> None:
         self.sendCommand(f'touch {x} {y}')
-    
+
     def touchSeq(self, code: str) -> None:
         command = ""
         for char in code:
             command += self.touch_coords[char] + " "
         self.sendCommand(f'touch {command.strip()}')
-    
+
     def updateFreezeRate(self) -> None:
         self.sendCommand(f'configure freezeRate 1')
-    
+
     def freeze(self, pointer: str, data: str) -> None:
         ofs = self.resolvePointer(pointer)
         self.sendCommand(f'freeze 0x{ofs.decode().rstrip()} {data}')
@@ -103,7 +102,7 @@ class SysBotBaseCommands:
     def clickA(self, sleep: int = 0) -> None:
         self.sendCommand("click A")
         time.sleep(sleep)
-    
+
     def clickB(self, sleep: int = 0) -> None:
         self.sendCommand("click B")
         time.sleep(sleep)
@@ -127,7 +126,7 @@ class SysBotBaseCommands:
     def clickLeft(self, sleep: int = 0) -> None:
         self.sendCommand("click DLEFT")
         time.sleep(sleep)
-    
+
     def clickRight(self, sleep: int = 0) -> None:
         self.sendCommand("click DRIGHT")
         time.sleep(sleep)
@@ -168,6 +167,3 @@ class SysBotBaseCommands:
         self.sendCommand("setStick LEFT 0 0x7FFE")
         time.sleep(sleep)
         self.sendCommand("setStick LEFT 0 0")
-    
-
-    

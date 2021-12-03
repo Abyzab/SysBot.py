@@ -17,8 +17,10 @@ class JsonHandler:
         return self.settings[key]
     
     def __setitem__(self, key: str, value: str) -> str:
+        oldVal = self.settings[key]
         self.settings[key] = value
         self.updateSettings()
+        return oldVal
   
     def getSettings(self) -> List:
         return self.settings

@@ -3,3 +3,6 @@
 /bots/distribute/*
 
 *.pyc
+
+.idea
+
