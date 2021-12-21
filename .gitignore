@@ -1,0 +1,8 @@
+/config.json
+
+/bots/distribute/*
+
+*.pyc
+
+.idea
+
