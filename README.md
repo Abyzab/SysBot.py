@@ -36,6 +36,7 @@ The botType setting in the config specifies the routine the bot performs.
   * Must be in Solaceon town.
   * Make sure Send to Boxes is set to Manual.
   * You'll want to be on a bike unless you like running.
+  * Don't have any eggs in your party and your party is full!
 
 ## Support
 
