@@ -21,11 +21,11 @@ if __name__ == "__main__":
     if os.path.exists(f"{os.path.abspath(os.curdir)}/config.json"):
         Configs = JsonHandler(f"{os.path.abspath(os.curdir)}/config.json", True)
 
-        if Configs["botType"] == "EggBot":
+        if Configs["botType"].lower() == "eggbot":
             EggBot = EggBotConnection(Configs["address"], int(Configs["port"]))
             EggBot.mainRoutine()
 
-        elif Configs["botType"] == "Sysbot":
+        elif Configs["botType"].lower() == "sysbot":
             settings = JsonHandler('settings')
             q = UserQueue(settings)
             startTradeRoutine = threading.Semaphore(q.size())

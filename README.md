@@ -32,6 +32,7 @@ The botType setting in the config specifies the routine the bot performs.
 - Eggbot - An automated shiny egg hunting bot.
   * Daycare must already contain parents that can produce eggs.
   * Must be in Solaceon town.
+  * You'll want to be on a bike unless you like walking.
 
 ## Credits
 
