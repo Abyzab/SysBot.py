@@ -6,6 +6,8 @@ A trade bot built for Pokémon Brilliant Diamond and Shining Pearl. It also offe
 
 You must have a hacked nintendo switch to run this. I am not liable for any damages or bans you might get in the process of running this. Use at your own risk.
 
+**Ensure you have save backups of everything you care about.**
+
 ## Dependencies
 
 - [sys-botbase](https://github.com/olliz0r/sys-botbase/releases) 2.0 or higher.
@@ -33,6 +35,13 @@ The botType setting in the config specifies the routine the bot performs.
   * Daycare must already contain parents that can produce eggs.
   * Must be in Solaceon town.
   * You'll want to be on a bike unless you like walking.
+
+## Support
+
+Questions and help wanted for using the bot can come to me here
+
+[<img src="https://discordapp.com/api/guilds/680260945666113591/widget.png?style=banner2">](https://discord.gg/Yh9hBYt)
+
 
 ## Credits
 
