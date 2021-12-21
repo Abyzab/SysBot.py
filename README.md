@@ -33,6 +33,13 @@ The botType setting in the config specifies the routine the bot performs.
   * Daycare must already contain parents that can produce eggs.
   * Must be in Solaceon town.
 
+## Support
+
+Questions and help wanted for using the bot can come to me here
+
+[<img src="https://discordapp.com/api/guilds/680260945666113591/widget.png?style=banner2">](https://discord.gg/Yh9hBYt)
+
+
 ## Credits
 
 While this was just a little project it has been very fun to implement and wouldn't have been such a pleasure without the following people.
