@@ -101,14 +101,10 @@ class MainCommands(commands.Cog):
         self.queue = bot.queue
 
     @commands.command()
-    async def ping(self, ctx: commands.Context) -> None:
-        await ctx.send("Pong!")
-
-    @commands.command()
     async def hi(self, ctx: commands.Context) -> None:
         await ctx.send(f"Hi ur qt {ctx.author.mention}!")
 
-    @commands.command(aliases=['qca', 'clearall'])
+    @commands.command(aliases=['qca', 'clearall'], brief="Clears all users from queue.")
     async def queue_clear_all(self, ctx: commands.Context) -> None:
         if ctx.author.id not in self.bot.config["botOwner"]:
             await ctx.send(f"You don't have permission to use this command.")
@@ -117,7 +113,7 @@ class MainCommands(commands.Cog):
         self.queue.clearQueue()
         await ctx.send(f"Cleared all from queue.")
 
-    @commands.command(aliases=["cq"])
+    @commands.command(aliases=["cq"], brief="Closes the queue for Entry.")
     async def close_queue(self, ctx: commands.Context) -> None:
         if ctx.author.id not in self.bot.config["botOwner"]:
             await ctx.send(f"You don't have permission to use this command.")
@@ -126,7 +122,7 @@ class MainCommands(commands.Cog):
         self.queue.closeQueue()
         await ctx.send(f"The Queue is now closed for entry.")
 
-    @commands.command(aliases=["oq"])
+    @commands.command(aliases=["oq"], brief="Opens the queue for Entry.")
     async def open_queue(self, ctx: commands.Context) -> None:
         if ctx.author.id not in self.bot.config["botOwner"]:
             await ctx.send(f"You don't have permission to use this command.")
@@ -135,7 +131,7 @@ class MainCommands(commands.Cog):
         self.queue.openQueue()
         await ctx.send(f"The Queue is now open for entry.")
 
-    @commands.command(aliases=['q', 'queue'])
+    @commands.command(aliases=['q', 'queue'], brief="Adds the user to the queue.")
     async def add_queue(self, ctx: commands.Context) -> None:
         if ctx.author.id in self.queue:
             await ctx.send(f"{ctx.author.mention}, you are already in the queue.")
@@ -161,7 +157,7 @@ class MainCommands(commands.Cog):
 
         await ctx.send(f"{ctx.author.mention} has been added to the queue. Position: {self.queue.size()}.")
 
-    @commands.command(aliases=['rq', 'lq', 'ql', 'leavequeue'])
+    @commands.command(aliases=['rq', 'lq', 'ql', 'leavequeue'], brief="Removes the user from the queue.")
     async def remove_queue(self, ctx: commands.Context) -> None:
         if ctx.author.id not in self.queue:
             await ctx.send(f"{ctx.author.mention}, you are not currently in the queue.")
@@ -177,7 +173,7 @@ class MainCommands(commands.Cog):
         self.bot.trigger_remove_event()
         await ctx.send(f"{ctx.author.mention} has been removed from the queue.")
 
-    @commands.command(aliases=['qp', 'pq'])
+    @commands.command(aliases=['qp', 'pq'], brief="Displays current position in the queue.")
     async def queue_position(self, ctx: commands.Context) -> None:
         if ctx.author.id not in self.queue:
             await ctx.send(f"{ctx.author.mention}, you are not currently in the queue.")
@@ -185,15 +181,15 @@ class MainCommands(commands.Cog):
 
         await ctx.send(f"{ctx.author.mention} is in the queue at position {self.queue.index(ctx.author.id) + 1}.")
 
-    @commands.command(aliases=['qs', 'queuesize'])
+    @commands.command(aliases=['qs', 'queuesize'], brief="Displays the current size of the queue.")
     async def current_queue_size(self, ctx: commands.Context) -> None:
         await ctx.send(f"The queue is currently {self.queue.size()} people.")
 
-    @commands.command(aliases=['ds', 'sent'])
+    @commands.command(aliases=['ds', 'sent'], brief="Displays the total trades done.")
     async def sent_count(self, ctx: commands.Context) -> None:
-        await ctx.send(f"The bot has sent {self.bot.settings['tradeCount']} Dittos!")
+        await ctx.send(f"The bot has sent {self.bot.settings['tradeCount']} Pokemon!")
 
-    @commands.command(aliases=['fa'])
+    @commands.command(aliases=['fa'], brief="Force adds a user to the queue by ID.")
     async def force_add(self, ctx: commands.Context, id: int) -> None:
         if ctx.author.id not in self.bot.config["botOwner"]:
             await ctx.send(f"You don't have permission to use this command.")
