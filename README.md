@@ -51,6 +51,10 @@ While this was just a little project it has been very fun to implement and would
 
 - [@architdate](https://github.com/architdate) for being such a wonderful inspiration and friend. Your support has always meant the world to me.
 
+- [@berichan](https://github.com/berichan) for all of the help and answering my questions about Sys-botbase and being a wonderful person
+
+- [@hp3721](https://github.com/hp3721) for constant help and support with pointers, data structures, and everything else.
+
 - [@SteveCookTU](https://github.com/SteveCookTU) for code reformatting and cleaning. As well as helping me test running the bot and being an amazing resource and helper.
 
 - [@kwsch](https://github.com/kwsch) and everyone who has worked on PKHeX to make it the power house that is today with excellent reference code (especially for encryption and decryption of Pokémon data along with documentation of the structures)
