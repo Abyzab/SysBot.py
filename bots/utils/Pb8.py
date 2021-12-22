@@ -45,6 +45,38 @@ class Pb8:
         return int.from_bytes(self._data[8:10], byteorder="little")
     
     @property
+    def nature(self) -> int:
+        return self._data[32]
+    
+    @property
+    def ability_no(self) -> int:
+        return self._data[22]
+    
+    @property
+    def iv_hp(self) -> int:
+        return (int.from_bytes(self._data[140:144], byteorder="little") >> 0) & 0x1F
+    
+    @property
+    def iv_atk(self) -> int:
+        return (int.from_bytes(self._data[140:144], byteorder="little") >> 5) & 0x1F
+
+    @property
+    def iv_def(self) -> int:
+        return (int.from_bytes(self._data[140:144], byteorder="little") >> 10) & 0x1F
+
+    @property
+    def iv_spe(self) -> int:
+        return (int.from_bytes(self._data[140:144], byteorder="little") >> 15) & 0x1F
+
+    @property
+    def iv_spa(self) -> int:
+        return (int.from_bytes(self._data[140:144], byteorder="little") >> 20) & 0x1F
+
+    @property
+    def iv_spd(self) -> int:
+        return (int.from_bytes(self._data[140:144], byteorder="little") >> 25) & 0x1F
+    
+    @property
     def nickname(self) -> str:
         return "".join(chr(x) for x in self._data[88:112] if x != 0)
     

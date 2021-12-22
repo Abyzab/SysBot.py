@@ -16,7 +16,6 @@ from bots.utils.PokeCrypto import DecryptEb8, EncryptPb8
 
 
 class SysBotConnection:
-    # Please, send help
     def __init__(self, address: str, port: int, startTradeRoutine: threading.Semaphore, q: UserQueue,
                  config: JsonHandler, settings: JsonHandler, PyBot) -> None:
         self.con = None
@@ -86,7 +85,7 @@ class SysBotConnection:
     def awaitTradeDialogue(self) -> bool:
         res = self.commands.peek(self.pointers["dialogue_open"], 1)
         unexpired = self.checkTimeout()
-        while res != b'07' and unexpired:
+        while res != b'01' and unexpired:
             res = self.commands.peek(self.pointers["dialogue_open"], 1)
             unexpired = self.checkTimeout()
         return unexpired
@@ -94,7 +93,7 @@ class SysBotConnection:
     def awaitTradeWindow(self) -> bool:
         res = self.commands.peek(self.pointers["is_trading"], 1)
         unexpired = self.checkTimeout()
-        while (res != b'01') and unexpired:
+        while res != b'01' and unexpired:
             self.commands.clickA(0.3)
             unexpired = self.checkTimeout()
             res = self.commands.peek(self.pointers["is_trading"], 1)
@@ -105,21 +104,13 @@ class SysBotConnection:
             pass
 
     def awaitTradeComplete(self) -> None:
-        time.sleep(5)  # Ensure Trade has started
+        time.sleep(8)  # Ensure Trade has started
         while self.commands.peek(self.pointers["tradeFlowState"], 1) != b'01':
             pass
     
     def readTradePokemon(self) -> Pb8:
         mon = self.commands.peek(self.pointers["trade"], 344)
         return Pb8(DecryptEb8(bytearray(binascii.unhexlify(mon))))
-
-    def waitForConnection(self) -> None:
-        self.commands.clickA(0.5)
-        while self.commands.peek(self.pointers["connectionDetect"], 1) not in [b'2D', b'25']:
-            pass
-        if self.commands.peek(self.pointers["connectionDetect"], 1) == b'25':
-            self.commands.clickA(0.5)
-            time.sleep(3)
 
     def joinUnionRoom(self) -> None:
         self.commands.clickY(0.5)
@@ -132,8 +123,9 @@ class SysBotConnection:
         self.commands.clickA(1)
         self.commands.clickA(0.5)
 
-        self.waitForConnection()
+        time.sleep(3)
 
+        self.commands.clickA(0.5)
         self.commands.clickA(0.5)
         self.commands.clickA(8)
 
@@ -153,13 +145,14 @@ class SysBotConnection:
             print(self.commands.peek(self.pointers["in_union"], 1))
             self.restartGame()
             self.PyBot.loop.create_task(self.PyBot.sendMessage(self.curr_user,
-                                                                f"Error has occured restarting game and attempting to join the room again. {self.curr_linkcode[:4]}-{self.curr_linkcode[5:]}"))
+                                                                f"Error has occured restarting game and attempting to join the room again. {self.curr_linkcode[:4]}-{self.curr_linkcode[4:]}"))
             return self.joinUnionRoom()
+
         self.commands.poke(self.pointers["player_x"], "0xAB4968C1")
         self.commands.poke(self.pointers["player_y"], "0x45C92741")
         self.commands.poke(self.pointers["rot_x"], "0x80000000")
 
-        time.sleep(8)
+        time.sleep(4)
 
     def startTradeLoop(self) -> bool:
         if self.checkTimeout():
@@ -258,7 +251,6 @@ class SysBotConnection:
                     self.PyBot.loop.create_task(self.PyBot.sendMessage(self.curr_user,
                                                                    f"Time limit exceeded. Trainer skipped. "
                                                                    f"please queue again."))
-                # self.recoverStart()
             else:
                 self.settings["tradeCount"] += 1
             
