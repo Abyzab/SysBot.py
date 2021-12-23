@@ -46,7 +46,9 @@ Within config.json you may set the conditions for the bot to stop. Example:
 
 With these conditions the bot will only stop on an Egg that is Shiny, 6IV, Adamant Nature and has it's Hidden Ability. (Ability accepts 1, 2 or 4 for HA.)
 
-The order of IVs is [HP, Atk, Def, SpA, SpD, Spe].
+The order of IVs is [HP, Atk, Def, SpA, SpD, Spe]. 
+
+The default config provides settings that will accept any ability, nature or ivs.
 
 
 

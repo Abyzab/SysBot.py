@@ -42,7 +42,7 @@ class EggBotConnection:
         if stop_conditions["nature"].lower() not in self.nature_util:
             reason.append(". Nature must be a valid Pokémon nature.")
         
-        if stop_conditions["ability"] not in [1,2,4]:
+        if stop_conditions["ability"] not in [1,2,4,None]:
             reason.append(". Ability must be 1, 2 or 4.")
 
         if reason:
@@ -126,7 +126,7 @@ class EggBotConnection:
         if egg.isShiny != self.egg_config["shiny"]:
             return False
         
-        if egg.ability_no != self.egg_config["ability"]:
+        if egg.ability_no != self.egg_config["ability"] and self.egg_config["ability"]:
             return False
         
         for i in range(len(self.egg_config["ivs"])):
@@ -134,7 +134,7 @@ class EggBotConnection:
             if iv and iv != egg_ivs[i]:
                 return False
         
-        if self.nature_util[egg.nature] != self.egg_config["nature"].lower() and self.egg_config["nature"].lower():
+        if self.nature_util[egg.nature] != self.egg_config["nature"].lower() and self.egg_config["nature"]:
             return False
 
         return True
