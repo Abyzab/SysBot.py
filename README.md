@@ -1,10 +1,10 @@
 # SysBot.py
 
-A trade bot built for Pokémon Brilliant Diamond and Shining Pearl. It also offers additional functions for shiny hunting (pending more being added).
+A bot built for Pokémon Brilliant Diamond and Shining Pearl. It offers a persistent queue for distribution trading through discord. As well as additional functions for automated shiny hunting (pending more being added).
 
 ## Warning
 
-You must have a hacked nintendo switch to run this. I am not liable for any damages or bans you might get in the process of running this. Use at your own risk.
+You must have a hacked Nintendo Switch to run this. I am not liable for any damages or bans you might get in the process of running this. Use at your own risk.
 
 **Ensure you have save backups of everything you care about.**
 
@@ -20,23 +20,35 @@ Ensure you have the necessary libraries by running:
 `pip install -r requirements.txt`
 
 To run the bot:
-- Run App.py to generate a blank config.json
+- Run `py App.py` to generate a blank config.json
 - Fill out the config
-- Run App.py again
+- Run `py App.py` again
 
 ## Modes
 
 The botType setting in the config specifies the routine the bot performs.
-- Sysbot - A Trade bot that manages a queue on discord.
+### Sysbot
+A Trade bot that manages a queue on discord.
   * Must have the global room unlocked. 
   * Save state should be somewhere outside.
   * Use +help for the list of usable commands.
-- Eggbot - An automated shiny egg hunting bot.
-  * Daycare must already contain parents that can produce eggs.
+### Eggbot 
+An automated shiny egg hunting bot.
+  * Daycare must already contain parents that can produce eggs that match the eggConfig.
   * Must be in Solaceon town.
-  * Make sure Send to Boxes is set to Manual.
+  * Send to Boxes must be set to Automatic.
   * You'll want to be on a bike unless you like running.
-  * Don't have any eggs in your party and your party is full!
+  * Ensure you have no eggs in your party, and that your party is full.
+
+Within config.json you may set the conditions for the bot to stop. Example:
+
+<img src="https://cdn.discordapp.com/attachments/733862180973314238/923365700934979604/unknown.png">
+
+With these conditions the bot will only stop on an Egg that is Shiny, 6IV, Adamant Nature and has it's Hidden Ability. (Ability accepts 1, 2 or 4 for HA.)
+
+The order of IVs is [HP, Atk, Def, SpA, SpD, Spe].
+
+
 
 ## Support
 
