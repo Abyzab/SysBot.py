@@ -123,11 +123,11 @@ class SysBotConnection:
         self.commands.clickA(1)
         self.commands.clickA(0.5)
 
-        time.sleep(3)
+        time.sleep(5)
 
         self.commands.clickA(0.5)
         self.commands.clickA(0.5)
-        self.commands.clickA(8)
+        self.commands.clickA(6)
 
         print(self.curr_linkcode)
 
@@ -139,7 +139,7 @@ class SysBotConnection:
         self.commands.clickA(8)
 
         self.commands.moveForward(0.5)
-        time.sleep(2.5)
+        time.sleep(4)
 
         if self.commands.peek(self.pointers["in_union"], 1) ==  b'00':
             print(self.commands.peek(self.pointers["in_union"], 1))
@@ -152,7 +152,7 @@ class SysBotConnection:
         self.commands.poke(self.pointers["player_y"], "0x45C92741")
         self.commands.poke(self.pointers["rot_x"], "0x80000000")
 
-        time.sleep(4)
+        time.sleep(1)
 
     def startTradeLoop(self) -> bool:
         if self.checkTimeout():
@@ -249,7 +249,7 @@ class SysBotConnection:
             if not result:
                 if result is not None:
                     self.PyBot.loop.create_task(self.PyBot.sendMessage(self.curr_user,
-                                                                   f"Time limit exceeded. Trainer skipped. "
+                                                                   f"Time limit exceeded. Trainer skipped, "
                                                                    f"please queue again."))
             else:
                 self.settings["tradeCount"] += 1

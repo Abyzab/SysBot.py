@@ -113,6 +113,7 @@ class EggBotConnection:
         self.commands.clickA(4)
         self.commands.clickB(0.5)
         self.commands.clickB(0.5)
+        self.commands.clickB(0.5)
 
     def checkEgg(self) -> bool:
         egg = self.commands.peek(self.pointers['b1s1'], 344)
