@@ -206,6 +206,8 @@ class SysBotConnection:
                 self.commands.clickA(0.4)
                 return self.startTradeLoop()
 
+            time.sleep(1)
+
             self.commands.clickA(0.5)
             self.commands.clickA(0.5)
             self.commands.clickA(0.5)
@@ -237,12 +239,10 @@ class SysBotConnection:
             if not self.awaitTradeConfirm():
                 self.errorLeave("Player cancelled trade too much. Removed from Queue.")
                 return None
-            
-
-
+        
             self.awaitTradeComplete()
 
-            time.sleep(4)
+            time.sleep(2)
             self.exitTrade()
 
             return True
