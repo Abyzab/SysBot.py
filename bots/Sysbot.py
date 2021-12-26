@@ -100,20 +100,51 @@ class SysBotConnection:
         return unexpired
 
     def awaitTradeOffer(self) -> None:
-        while self.commands.peek(self.pointers["is_receive"], 1) == b'00':
-            pass
+        res = self.commands.peek(self.pointers["trade_confirmed"], 1)
+        while res != b'04':
+            res = self.commands.peek(self.pointers["trade_confirmed"], 1)
+            if res == b'0A':
+                return False
+        return True
 
     def awaitTradeComplete(self) -> None:
-        time.sleep(8)  # Ensure Trade has started
-        while self.commands.peek(self.pointers["tradeFlowState"], 1) != b'01':
+        while self.commands.peek(self.pointers["trade_confirmed"], 1) != b'02':
             pass
+    
+    def awaitTradeConfirm(self) -> bool:
+        cancels = 0
+        res = self.commands.peek(self.pointers["trade_confirmed"], 1)
+        while res < b'06':
+            if res == b'02':
+                cancels += 1
+                if cancels > 2:
+                    return False
+                self.commands.clickA(0.5)
+                self.commands.clickA(0.5)
+                self.commands.clickA(0.5)
+            elif res == b'04':
+                self.commands.clickA(0.5)
+                
+            res = self.commands.peek(self.pointers["trade_confirmed"], 1)
+        if res == b'0A':
+            return False
+        return True
+
     
     def readTradePokemon(self) -> Pb8:
         mon = self.commands.peek(self.pointers["trade"], 344)
         return Pb8(DecryptEb8(bytearray(binascii.unhexlify(mon))))
 
+    def errorLeave(self, message: str) -> None:
+        time.sleep(1)
+        self.PyBot.loop.create_task(self.PyBot.sendMessage(self.curr_user, message))
+        self.commands.clickB(1)
+        self.exitTrade()
+        time.sleep(1)
+        self.leaveUnionRoom()
+
     def joinUnionRoom(self) -> None:
-        self.commands.clickY(0.5)
+        self.commands.clickY(1)
         self.commands.clickRight(0.5)
         self.commands.clickA(1)
         self.commands.clickA(1)
@@ -142,7 +173,6 @@ class SysBotConnection:
         time.sleep(4)
 
         if self.commands.peek(self.pointers["in_union"], 1) ==  b'00':
-            print(self.commands.peek(self.pointers["in_union"], 1))
             self.restartGame()
             self.PyBot.loop.create_task(self.PyBot.sendMessage(self.curr_user,
                                                                 f"Error has occured restarting game and attempting to join the room again. {self.curr_linkcode[:4]}-{self.curr_linkcode[4:]}"))
@@ -165,6 +195,10 @@ class SysBotConnection:
 
             time.sleep(0.6)
 
+            # Inject Random Pokemon
+
+            self.commands.poke(self.pointers["b1s1"], "0x" + self.pokemon[random.choice(list(self.pokemon.keys()))].hex())
+
             if not self.awaitTradeDialogue():
                 return False
 
@@ -172,45 +206,44 @@ class SysBotConnection:
                 self.commands.clickA(0.4)
                 return self.startTradeLoop()
 
-            self.awaitTradeOffer()
+            self.commands.clickA(0.5)
+            self.commands.clickA(0.5)
+            self.commands.clickA(0.5)
+
+            if not self.awaitTradeOffer():
+                self.errorLeave("Player cancelled trade too much. Removed from Queue.")
+                return None
             
             offered = self.readTradePokemon()
 
             if offered.isEgg and offered.friendship == 0:
-                self.restartGame()
-                self.PyBot.loop.create_task(self.PyBot.sendMessage(self.curr_user,
-                                                                    f"Please do not try to softlock the bot. Removed from Queue."))
+                self.errorLeave("Please do not try to softlock the bot. Removed from Queue.")
                 return None
 
             if offered.species in [61, 64, 67, 75, 79, 93, 95, 112, 117, 123, 125, 126, 137, 233, 356, 366]:
-                self.restartGame()
-                self.PyBot.loop.create_task(self.PyBot.sendMessage(self.curr_user,
-                                                                    f"Please do not offer trade evolutions. Removed from Queue."))
+                self.errorLeave("Please do not offer trade evolutions. Removed from Queue.")
                 return None
             
             if offered.nickname.lower() in self.pokemon.keys():
+                self.commands.clickB(0.5)
+                # Update Pokemon if nickname override used.
                 self.commands.poke(self.pointers["b1s1"], "0x" + self.pokemon[offered.nickname.lower()].hex())
-            else:
-                self.commands.poke(self.pointers["b1s1"], "0x" + self.pokemon[random.choice(list(self.pokemon.keys()))].hex())
+                self.commands.clickA(0.5)
+                self.commands.clickA(0.5)
+                self.commands.clickA(0.5)
 
-            self.commands.clickA(0.3)
             self.commands.clickA(0.5)
+    
+            if not self.awaitTradeConfirm():
+                self.errorLeave("Player cancelled trade too much. Removed from Queue.")
+                return None
+            
 
-            # Offered, find error handling pointers later
-            self.commands.clickA(0.3)
-            self.commands.clickA(3)
-            self.commands.clickA(3)
-            self.commands.clickA(4)
-
-            # TODO Add Handling For Trades Being Cancelled
 
             self.awaitTradeComplete()
 
             time.sleep(4)
-            self.commands.clickB(0.3)
-            self.commands.clickUp(0.3)
-            self.commands.clickA(2)
-            self.commands.clickA(3)
+            self.exitTrade()
 
             return True
         return False
@@ -225,12 +258,21 @@ class SysBotConnection:
         self.commands.clickA(25)
         self.commands.clickA(3)
         self.commands.clickA(14)
+        self.startupCommands()
 
     def leaveUnionRoom(self) -> None:
         self.commands.clickB(0.3)
         self.commands.clickY(0.5)
         self.commands.clickDown(0.5)
         self.commands.clickA(5)
+        if self.commands.peek(self.pointers["in_union"], 1) == b'01':
+            self.restartGame()
+    
+    def exitTrade(self) -> None:
+        self.commands.clickB(0.3)
+        self.commands.clickUp(0.3)
+        self.commands.clickA(0.5)
+        self.commands.clickA(0.5)
 
     def await_thread(self) -> None:
         while True:
@@ -242,7 +284,7 @@ class SysBotConnection:
                                                                f"{self.curr_linkcode[0:4]}-{self.curr_linkcode[4:]}."))
             if self.queue.size() > 1:
                 self.PyBot.loop.create_task(self.PyBot.sendMessage(self.queue[1],
-                                                    f"Your turn is coming up next. Please be ready."))
+                                                                f"Your turn is coming up next. Please be ready."))
             self.joinUnionRoom()
             self.start_time = datetime.datetime.now()
             result = self.startTradeLoop()
@@ -264,10 +306,11 @@ class PycordManager(commands.Bot):
                  config: JsonHandler, settings: JsonHandler) -> None:
         self.__triggerEvent = startTradeRoutine
         self.queue = q
-        intents = discord.Intents().all()
-        super().__init__(command_prefix='+', intents=intents, case_insensitive=True)
         self.config = config
         self.settings = settings
+
+        intents = discord.Intents().all()
+        super().__init__(command_prefix=self.config["discordPrefix"], intents=intents, case_insensitive=True)
 
         self.load_extension('bots.commands.Pycord')
 

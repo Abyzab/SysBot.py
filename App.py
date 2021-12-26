@@ -10,9 +10,9 @@ from bots.commands.Pycord import UserQueue
 
 
 def makeBlankConfig():
-    defaultConfig = {"token": "", "tradeTimeout": 60, "maxQueue": 20, "botOwner": [], "address": "", "port": 6000,
-                     "botType": "Sysbot", "eggConfig" : {"shiny" : True, "ivs" : [None, None, None, None, None, None],
-                     "nature" : "", "ability" : None}}
+    defaultConfig = {"token": "", "tradeTimeout": 60, "maxQueue": 20, "botOwner": [], "discordPrefix" : "+", "address": "",
+                     "port": 6000, "botType": "Sysbot", "eggConfig" : {"shiny" : True, 
+                     "ivs" : [None, None, None, None, None, None], "nature" : "", "ability" : None}}
     with open("config.json", "w+") as newConfig:
         json.dump(defaultConfig, newConfig, indent=4)
     print("Blank Config created, please fill out your settings")
