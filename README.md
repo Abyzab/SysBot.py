@@ -56,7 +56,7 @@ The default config provides settings that will accept any ability, nature or ivs
 
 Questions and help wanted for using the bot can come to me here
 
-[<img src="https://discordapp.com/api/guilds/680260945666113591/widget.png?style=banner2">](https://discord.gg/Yh9hBYt)
+[<img src="https://discordapp.com/api/guilds/680260945666113591/widget.png?style=banner2">](https://discord.gg/SKAU9Bv7KU)
 
 
 ## Credits
